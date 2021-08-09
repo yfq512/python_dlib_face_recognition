@@ -3,27 +3,6 @@ import cv2
 import numpy as np
 
 
-def img2mask2(img, p1, p2):
-    if p1[0] == p2[0]:
-        p2[0] = p2[0] + 0.0001
-    shape = img.shape
-    mask = np.ones((shape[0], shape[1]))
-    k = (p2[1] - p1[1]) / (p2[0] - p1[0])
-    b = p2[1] - k * p2[0]
-    for i in range(mask.shape[1]):
-        for j in range(mask.shape[0]):
-            zeros_jz_y = k * i + b
-            if j > zeros_jz_y:
-                mask[j, i] = 0
-
-    (bb, gg, rr) = cv2.split(img)
-    bb = np.multiply(bb, mask)
-    gg = np.multiply(gg, mask)
-    rr = np.multiply(rr, mask)
-    result = cv2.merge((bb, gg, rr))
-    return result.astype('uint8')
-
-
 def img2mask(img, p1, p2):
     if p1[0] == p2[0]:
         p2[0] = p2[0] + 0.0001
